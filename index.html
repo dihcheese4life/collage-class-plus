@@ -1,280 +1,488 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Trumbull Fights – Dark</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-/* ────────────────────── DARK THEME ────────────────────── */
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:#e7e9ea;line-height:1.4;}
-.app{display:flex;max-width:1200px;margin:auto;height:100vh;}
-.sidebar{width:250px;border-right:1px solid #333;padding:20px 0;position:fixed;height:100vh;overflow-y:auto;background:#000;}
-.logo{font-size:24px;font-weight:bold;color:#1da1f2;padding:0 20px 20px;border-bottom:1px solid #333;margin-bottom:20px;}
-.nav-item{display:flex;align-items:center;padding:12px 20px;color:#71767b;text-decoration:none;cursor:pointer;border-radius:9999px;margin-bottom:4px;}
-.nav-item:hover{background:#16181c;color:#e7e9ea;}
-.nav-item.active{color:#1da1f2;font-weight:bold;}
-.nav-icon{margin-right:12px;font-size:20px;}
-.compose-btn{position:fixed;bottom:20px;right:20px;background:#1da1f2;color:#fff;border:none;border-radius:50px;padding:12px 24px;font-weight:bold;cursor:pointer;box-shadow:0 2px 8px rgba(29,161,242,.3);}
-.compose-btn:hover{background:#0d8bd9;}
-.main{flex:1;margin-left:250px;border-left:1px solid #333;border-right:1px solid #333;background:#000;}
-.timeline{max-width:600px;margin:auto;padding:20px 0;}
-.timeline-header{padding:0 20px 20px;border-bottom:1px solid #333;font-size:20px;font-weight:bold;color:#fff;}
-.post{display:flex;padding:16px 20px;border-bottom:1px solid #333;cursor:pointer;}
-.post:hover{background:#080808;}
-.post-avatar{width:48px;height:48px;border-radius:50%;background:#333;margin-right:12px;display:flex;align-items:center;justify-content:center;font-weight:bold;color:#1da1f2;}
-.post-content{flex:1;}
-.post-header{display:flex;align-items:center;margin-bottom:4px;}
-.post-author{font-weight:bold;color:#fff;margin-right:4px;}
-.post-handle,.post-time{color:#71767b;}
-.post-text{margin-bottom:8px;color:#e7e9ea;}
-.post-video{width:100%;height:300px;background:#111;border-radius:12px;margin-bottom:12px;object-fit:cover;}
-.post-actions{display:flex;justify-content:space-between;width:425px;color:#71767b;}
-.action{display:flex;align-items:center;cursor:pointer;}
-.action:hover{color:#1da1f2;}
-.modal{display:none;position:fixed;z-index:1000;inset:0;background:rgba(0,0,0,.8);}
-.modal-content{background:#111;margin:10% auto;padding:20px;border-radius:12px;width:90%;max-width:500px;position:relative;border:1px solid #333;}
-.close{position:absolute;right:15px;top:15px;font-size:28px;font-weight:bold;cursor:pointer;color:#aaa;}
-.close:hover{color:#fff;}
-.form-group{margin-bottom:16px;}
-label{display:block;margin-bottom:4px;font-weight:bold;color:#e7e9ea;}
-input[type=file],textarea{width:100%;padding:8px;border:1px solid #333;border-radius:8px;background:#000;color:#e7e9ea;}
-textarea{height:100px;resize:vertical;}
-.submit-btn{background:#1da1f2;color:#fff;border:none;padding:12px 24px;border-radius:20px;cursor:pointer;font-weight:bold;width:100%;}
-.submit-btn:hover{background:#0d8bd9;}
-.submit-btn:disabled{background:#444;cursor:not-allowed;}
-.placeholder{height:100px;background:linear-gradient(90deg,#1a1a1a 25%,#222 50%,#1a1a1a 75%);background-size:200% 100%;animation:load 1.5s infinite;border-radius:8px;margin:20px 0;}
-@keyframes load{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.admin-notice{background:#1da1f2;color:#fff;padding:8px 16px;text-align:center;font-size:14px;position:fixed;top:0;left:0;width:100%;z-index:9999;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake College Class Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .class-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .class-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .class-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        }
+
+        .class-card p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .click-target {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+            transition: opacity 0.3s;
+        }
+
+        .click-target.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .click-counter {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #0f0;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .click-counter.show {
+            opacity: 1;
+        }
+
+        /* Destruction Animation */
+        .destroyed * {
+            animation: explode 1.5s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translateY(0) rotate(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-300px) rotate(720deg) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Games Portal */
+        .games-portal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+
+        .games-portal.active {
+            display: flex;
+            animation: portalOpen 1s ease-out;
+        }
+
+        @keyframes portalOpen {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .portal-title {
+            font-size: 4rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #ff0066, #00ff99, #0066ff, #ffcc00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px #fff); }
+            to { filter: drop-shadow(0 0 30px #0f0); }
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .game-card {
+            background: #111;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid #333;
+            position: relative;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            border-color: #0f0;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+
+        .game-thumb {
+            width: 100%;
+            height: 120px;
+            background: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #666;
+        }
+
+        .game-info {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .game-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #0f0;
+        }
+
+        .game-info p {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #0f0;
+            border-radius: 50%;
+            animation: particleFloat 2s ease-out forwards;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-500px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Glitch Effect */
+        .glitch {
+            animation: glitch 0.3s ease-in-out 3;
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-5px, 5px); }
+            40% { transform: translate(5px, -5px); }
+            60% { transform: translate(-5px, -5px); }
+            80% { transform: translate(5px, 5px); }
+        }
+    </style>
 </head>
 <body>
+    <div class="container" id="collegePortal">
+        <header>
+            <h1>University of Excellence</h1>
+            <p class="subtitle">Student Portal - Fall 2025 Semester</p>
+        </header>
 
-<div id="adminNotice" class="admin-notice" style="display:none;">
-ADMIN MODE – type !approve &lt;id&gt; or !deny &lt;id&gt; in Discord
-</div>
+        <div class="class-grid">
+            <div class="class-card">
+                <h3>Calculus III</h3>
+                <p>MWF 9:00 AM - 10:20 AM | Prof. Johnson | Room 204</p>
+            </div>
+            <div class="class-card">
+                <h3>Organic Chemistry</h3>
+                <p>TTh 1:00 PM - 2:50 PM | Dr. Patel | Lab B12</p>
+            </div>
+            <div class="class-card">
+                <h3>Modern Physics</h3>
+                <p>MWF 11:00 AM - 12:20 PM | Prof. Chen | Room 108</p>
+            </div>
+            <div class="class-card">
+                <h3>Data Structures</h3>
+                <p>TTh 10:00 AM - 11:50 AM | Dr. Lee | CS Lab 3</p>
+            </div>
+            <div class="class-card">
+                <h3>World History II</h3>
+                <p>MWF 2:00 PM - 3:20 PM | Prof. Martinez | Hall A</p>
+            </div>
+            <div class="class-card">
+                <h3>Macroeconomics</h3>
+                <p>TTh 3:00 PM - 4:20 PM | Dr. Smith | Room 301</p>
+            </div>
+        </div>
 
-<div class="app">
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="logo">Trumbull Fights</div>
-    <a href="#" class="nav-item active" onclick="showHome()"><span class="nav-icon">Home</span>Home</a>
-    <a href="#" class="nav-item"><span class="nav-icon">Search</span>Search</a>
-    <a href="#" class="nav-item"><span class="nav-icon">Notifications</span>Notifications</a>
-    <a href="#" class="nav-item"><span class="nav-icon">Messages</span>Messages</a>
-    <a href="#" class="nav-item"><span class="nav-icon">Fights</span>Fights</a>
-  </div>
-
-  <!-- Timeline -->
-  <div class="main">
-    <div class="timeline" id="timeline">
-      <div class="timeline-header">Home – Trumbull County Fight Videos</div>
+        <div class="click-target" id="clickTarget"></div>
+        <div class="click-counter" id="clickCounter">Clicks: 0 / 5</div>
     </div>
-  </div>
-</div>
 
-<button class="compose-btn" onclick="openModal()">Request Fight Video Upload</button>
+    <!-- Games Portal -->
+    <div class="games-portal" id="gamesPortal">
+        <h1 class="portal-title">🎮 GAME LAUNCHER ACTIVATED 🎮</h1>
+        <div class="games-grid" id="gamesGrid"></div>
+    </div>
 
-<!-- Upload Modal -->
-<div id="uploadModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">×</span>
-    <h2 style="color:#fff;">Request to Upload Fight Video</h2>
-    <p style="color:#aaa;">Your video will be sent to Discord for review. If approved, it appears on the timeline.</p>
-    <form id="uploadForm">
-      <div class="form-group">
-        <label for="videoFile">Video (MP4, ≤100 MB)</label>
-        <input type="file" id="videoFile" accept="video/*" required>
-      </div>
-      <div class="form-group">
-        <label for="description">Description</label>
-        <textarea id="description" placeholder="e.g. Downtown Warren brawl, Oct 2025" required></textarea>
-      </div>
-      <button type="submit" class="submit-btn" id="submitBtn">Send Request</button>
-    </form>
-  </div>
-</div>
+    <div class="particles" id="particles"></div>
 
-<script>
-/* ────────────────────── CONFIG ────────────────────── */
-const WEBHOOK = 'https://discord.com/api/webhooks/1432808010123841546/EefYr7iBrm73if-vKpIdJ6XmN1o-3ARCbET9svLibepQHfkP5umZNmYe6p1IuzYwaZyJ';
-const ADMIN_MODE = new URLSearchParams(location.search).get('admin') === 'true';
-if (ADMIN_MODE) document.getElementById('adminNotice').style.display='block';
+    <script>
+        // Click counter
+        let clickCount = 0;
+        const target = document.getElementById('clickTarget');
+        const counter = document.getElementById('clickCounter');
+        const collegePortal = document.getElementById('collegePortal');
+        const gamesPortal = document.getElementById('gamesPortal');
+        const particlesContainer = document.getElementById('particles');
 
-/* ────────────────────── STORAGE KEYS ────────────────────── */
-const PENDING_KEY = 'trumbull_pending';
-const APPROVED_KEY = 'trumbull_approved';
+        // Show click target after 2 seconds
+        setTimeout(() => {
+            target.classList.add('active');
+            counter.classList.add('show');
+        }, 2000);
 
-/* ────────────────────── HELPERS ────────────────────── */
-function randId() { return Date.now().toString(36) + Math.random().toString(36).substr(2,5); }
+        // Click handler
+        target.addEventListener('click', () => {
+            clickCount++;
+            counter.textContent = `Clicks: ${clickCount} / 5`;
 
-function savePending(arr){ localStorage.setItem(PENDING_KEY, JSON.stringify(arr)); }
-function getPending(){ return JSON.parse(localStorage.getItem(PENDING_KEY)||'[]'); }
-function saveApproved(arr){ localStorage.setItem(APPROVED_KEY, JSON.stringify(arr)); }
-function getApproved(){ return JSON.parse(localStorage.getItem(APPROVED_KEY)||'[]'); }
+            // Create click effect
+            createParticleEffect(event.clientX, event.clientY);
 
-/* ────────────────────── RENDER TIMELINE ────────────────────── */
-function render(){
-  const timeline = document.getElementById('timeline');
-  const approved = getApproved();
-  timeline.innerHTML = `<div class="timeline-header">Home – Trumbull County Fight Videos</div>`;
+            if (clickCount === 1) {
+                document.body.style.background = 'linear-gradient(135deg, #8B0000, #DC143C)';
+                collegePortal.classList.add('glitch');
+            }
 
-  if(!approved.length){
-    timeline.innerHTML += `<div style="padding:20px;text-align:center;color:#71767b;">No approved fights yet.</div>`;
-    return;
-  }
+            if (clickCount >= 5) {
+                setTimeout(destroyCollege, 500);
+            }
+        });
 
-  approved.forEach(p=>{
-    const el = document.createElement('div');
-    el.className='post';
-    el.innerHTML = `
-      <div class="post-avatar">TF</div>
-      <div class="post-content">
-        <div class="post-header">
-          <span class="post-author">Trumbull Fights</span>
-          <span class="post-handle">@trumbullfights</span>
-          <span class="post-time">· ${new Date(p.timestamp).toLocaleString()}</span>
-        </div>
-        <div class="post-text">${p.description}</div>
-        <video class="post-video" controls>
-          <source src="${p.videoUrl}" type="video/mp4">
-        </video>
-        <div class="post-actions">
-          <div class="action">Reply</div><div class="action">Retweet</div>
-          <div class="action">Like</div><div class="action">Share</div>
-        </div>
-      </div>`;
-    timeline.appendChild(el);
-  });
-}
+        function createParticleEffect(x, y) {
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.background = `hsl(${Math.random() * 60 + 10}, 100%, 50%)`;
+                particle.style.animationDelay = Math.random() * 0.5 + 's';
+                particlesContainer.appendChild(particle);
 
-/* ────────────────────── MODAL ────────────────────── */
-function openModal(){ document.getElementById('uploadModal').style.display='block'; }
-function closeModal(){ document.getElementById('uploadModal').style.display='none'; }
-window.onclick = e=>{ if(e.target===document.getElementById('uploadModal')) closeModal(); };
+                setTimeout(() => particle.remove(), 2000);
+            }
+        }
 
-/* ────────────────────── UPLOAD → DISCORD ────────────────────── */
-document.getElementById('uploadForm').addEventListener('submit', async e=>{
-  e.preventDefault();
-  const file = document.getElementById('videoFile').files[0];
-  const desc = document.getElementById('description').value.trim();
-  const btn = document.getElementById('submitBtn');
-  if(!file||!desc) return;
-  if(file.size>100*1024*1024){ alert('Max 100 MB'); return; }
+        function destroyCollege() {
+            // Add destruction class
+            collegePortal.classList.add('destroyed');
+            
+            // Play destruction sound effect (using Web Audio API)
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            oscillator.type = 'sawtooth';
+            oscillator.frequency.setValueAtTime(100, audioCtx.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 1);
+            oscillator.connect(audioCtx.destination);
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 1);
 
-  btn.disabled=true; btn.textContent='Uploading…';
+            // Show games portal after destruction
+            setTimeout(() => {
+                collegePortal.style.display = 'none';
+                gamesPortal.classList.add('active');
+                generateGames();
+            }, 1800);
+        }
 
-  try{
-    const id = randId();
-    const videoUrl = URL.createObjectURL(file);   // demo – in prod upload to S3/Cloudinary
+        // List of 50+ games
+        const games = [
+            { name: "Geometry Dash", icon: "🔺", desc: "Rhythm platformer" },
+            { name: "Minecraft", icon: "🟫", desc: "Block building adventure" },
+            { name: "Fortnite", icon: "🎯", desc: "Battle Royale" },
+            { name: "Roblox", icon: "🟦", desc: "User-created worlds" },
+            { name: "Among Us", icon: "👨‍🚀", desc: "Social deduction" },
+            { name: "GTA V", icon: "🚔", desc: "Open world action" },
+            { name: "Valorant", icon: "🔫", desc: "Tactical shooter" },
+            { name: "League of Legends", icon: "⚔️", desc: "MOBA" },
+            { name: "CS:GO", icon: "💣", desc: "Competitive FPS" },
+            { name: "Apex Legends", icon: "🦾", desc: "Hero shooter" },
+            { name: "Overwatch 2", icon: "🦸", desc: "Team hero shooter" },
+            { name: "Rocket League", icon: "⚽", desc: "Car soccer" },
+            { name: "Fall Guys", icon: "👑", desc: "Battle royale party" },
+            { name: "Stardew Valley", icon: "🌾", desc: "Farming RPG" },
+            { name: "Hollow Knight", icon: "🦋", desc: "Metroidvania" },
+            { name: "Celeste", icon: "⛰️", desc: "Platformer" },
+            { name: "Undertale", icon: "❤️", desc: "RPG with choices" },
+            { name: "Terraria", icon: "⛏️", desc: "2D sandbox" },
+            { name: "Subnautica", icon: "🌊", desc: "Underwater survival" },
+            { name: "Portal 2", icon: "🧩", desc: "Puzzle platformer" },
+            { name: "The Witcher 3", icon: "⚔️", desc: "Epic RPG" },
+            { name: "Red Dead 2", icon: "🤠", desc: "Western adventure" },
+            { name: "Cyberpunk 2077", icon: "🌃", desc: "Open world RPG" },
+            { name: "DOOM Eternal", icon: "😈", desc: "Fast FPS" },
+            { name: "Hades", icon: "🔱", desc: "Roguelike" },
+            { name: "Slay the Spire", icon: "🃏", desc: "Deck builder" },
+            { name: "Dead Cells", icon: "⚰️", desc: "Roguelite" },
+            { name: "Cuphead", icon: "☕", desc: "Run & gun" },
+            { name: "Ori", icon: "🌟", desc: "Platform adventure" },
+            { name: "Brawl Stars", icon: "🤜", desc: "Mobile MOBA" },
+            { name: "Clash Royale", icon: "👑", desc: "Strategy" },
+            { name: "Genshin Impact", icon: "✨", desc: "Open world gacha" },
+            { name: "Animal Crossing", icon: "🏝️", desc: "Life sim" },
+            { name: "Super Mario", icon: "🍄", desc: "Platformer" },
+            { name: "Zelda BOTW", icon: "🗡️", desc: "Open air adventure" },
+            { name: "Pokemon", icon: "⚡", desc: "Creature collecting" },
+            { name: "Sonic", icon: "💨", desc: "Fast platformer" },
+            { name: "Tetris", icon: "🟥", desc: "Puzzle classic" },
+            { name: "Pac-Man", icon: "👻", desc: "Arcade" },
+            { name: "Space Invaders", icon: "👾", desc: "Shooter" },
+            { name: "Pong", icon: "🏓", desc: "Classic" },
+            { name: "Snake", icon: "🐍", desc: "Classic" },
+            { name: "Flappy Bird", icon: "🐦", desc: "Endless" },
+            { name: "Angry Birds", icon: "🐦", desc: "Physics" },
+            { name: "Candy Crush", icon: "🍬", desc: "Match-3" },
+            { name: "Subway Surfers", icon: "🏃", desc: "Endless runner" },
+            { name: "Temple Run", icon: "🏛️", desc: "Endless runner" },
+            { name: "Jetpack Joyride", icon: "✈️", desc: "Endless" },
+            { name: "Crossy Road", icon: "🐔", desc: "Endless" },
+            { name: "Doodle Jump", icon: "🟢", desc: "Vertical jumper" },
+            { name: "2048", icon: "🔢", desc: "Puzzle" },
+            { name: "Bejeweled", icon: "💎", desc: "Match-3" },
+            { name: "Plants vs Zombies", icon: "🌻", desc: "Tower defense" },
+            { name: "Bloons TD", icon: "🎈", desc: "Tower defense" },
+            { name: "Cut the Rope", icon: "🍬", desc: "Physics puzzle" }
+        ];
 
-    // ---- 1. Store pending locally (so admin can approve later) ----
-    const pending = getPending();
-    pending.push({id, description:desc, videoUrl, timestamp:new Date().toISOString(), fileName:file.name});
-    savePending(pending);
+        function generateGames() {
+            const grid = document.getElementById('gamesGrid');
+            games.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.innerHTML = `
+                    <div class="game-thumb">${game.icon}</div>
+                    <div class="game-info">
+                        <h3>${game.name}</h3>
+                        <p>${game.desc}</p>
+                    </div>
+                `;
+                card.addEventListener('click', () => {
+                    alert(`Launching ${game.name}... 🚀\n\n(Just kidding - this is a demo!)`);
+                });
+                grid.appendChild(card);
+            });
+        }
 
-    // ---- 2. Build Discord embed (no buttons, just video + ID) ----
-    const embed = {
-      title: 'New Fight Video Request',
-      description: desc,
-      color: 0x1da1f2,
-      fields: [
-        {name:'ID',value:`\`${id}\``,inline:true},
-        {name:'File',value:file.name,inline:true},
-        {name:'Size',value:`${(file.size/1024/1024).toFixed(1)} MB`,inline:true}
-      ],
-      timestamp: new Date().toISOString(),
-      footer:{text:'Reply with !approve <id> or !deny <id>'}
-    };
-
-    const payload = {embeds:[embed]};
-
-    const form = new FormData();
-    form.append('file', file, file.name);
-    form.append('payload_json', JSON.stringify(payload));
-
-    const res = await fetch(WEBHOOK, {method:'POST', body:form});
-    if(!res.ok) throw new Error('Webhook error');
-
-    alert('Request sent! Admin can now !approve '+id);
-    closeModal(); e.target.reset();
-  }catch(err){
-    alert('Error: '+err.message);
-    console.error(err);
-  }finally{
-    btn.disabled=false; btn.textContent='Send Request';
-  }
-});
-
-/* ────────────────────── ADMIN COMMAND SIMULATION (demo) ────────────────────── */
-if(ADMIN_MODE){
-  // Auto-check every 3 s for new pending items and simulate command input
-  setInterval(()=>{
-    const pending = getPending();
-    if(!pending.length) return;
-    const first = pending[0];
-    // Simulate admin typing "!approve <id>"
-    handleCommand(`!approve ${first.id}`);
-  }, 5000);
-}
-
-/* ────────────────────── COMMAND HANDLER ────────────────────── */
-function handleCommand(text){
-  const [cmd, arg] = text.trim().split(/\s+/);
-  if(cmd==='!approve' && arg){
-    const pending = getPending();
-    const idx = pending.findIndex(p=>p.id===arg);
-    if(idx===-1){ console.log('ID not found'); return; }
-    const fight = pending.splice(idx,1)[0];
-    savePending(pending);
-
-    const approved = getApproved();
-    approved.unshift(fight);
-    saveApproved(approved);
-    render();
-    console.log(`Approved ${arg}`);
-  }
-  else if(cmd==='!deny' && arg){
-    const pending = getPending();
-    const idx = pending.findIndex(p=>p.id===arg);
-    if(idx>-1){
-      pending.splice(idx,1);
-      savePending(pending);
-      console.log(`Denied ${arg}`);
-    }
-  }
-}
-
-/* ────────────────────── DISCORD COMMAND LISTENER (real bot needed) ──────────────────────
-   In a production environment you would run a tiny Discord bot that listens for
-   messages in the same channel and calls `handleCommand(message.content)`.
-   The bot only needs `MESSAGE_CONTENT` intent and the webhook channel ID.
-   Example (Node.js + discord.js) is at the bottom of this file.
-*/
-
-/* ────────────────────── INITIAL LOAD ────────────────────── */
-render();
-</script>
-
-<!-- ============================================= -->
-<!-- OPTIONAL: tiny Discord bot (Node.js) example  -->
-<!-- ============================================= -->
-<!--
-const { Client, GatewayIntentBits } = require('discord.js');
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
-
-client.once('ready', () => console.log('Bot ready'));
-
-client.on('messageCreate', msg => {
-  if(msg.author.bot) return;
-  if(msg.channel.id !== 'YOUR_WEBHOOK_CHANNEL_ID') return;
-  // forward the command to the page (via webhook or shared DB)
-  // For demo we just log:
-  console.log('Command:', msg.content);
-  // You could POST to a tiny endpoint that calls the same handleCommand logic.
-});
-
-client.login('YOUR_BOT_TOKEN');
--->
+        // Easter egg: Press 'G' to skip to games
+        document.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'g' && clickCount < 5) {
+                clickCount = 5;
+                counter.textContent = `Clicks: 5 / 5`;
+                setTimeout(destroyCollege, 300);
+            }
+        });
+    </script>
 </body>
 </html>
