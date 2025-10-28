@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Trumbull Fights – Dark</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+/* ────────────────────── DARK THEME ────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:#e7e9ea;line-height:1.4;}
+.app{display:flex;max-width:1200px;margin:auto;height:100vh;}
+.sidebar{width:250px;border-right:1px solid #333;padding:20px 0;position:fixed;height:100vh;overflow-y:auto;background:#000;}
+.logo{font-size:24px;font-weight:bold;color:#1da1f2;padding:0 20px 20px;border-bottom:1px solid #333;margin-bottom:20px;}
+.nav-item{display:flex;align-items:center;padding:12px 20px;color:#71767b;text-decoration:none;cursor:pointer;border-radius:9999px;margin-bottom:4px;}
+.nav-item:hover{background:#16181c;color:#e7e9ea;}
+.nav-item.active{color:#1da1f2;font-weight:bold;}
+.nav-icon{margin-right:12px;font-size:20px;}
+.compose-btn{position:fixed;bottom:20px;right:20px;background:#1da1f2;color:#fff;border:none;border-radius:50px;padding:12px 24px;font-weight:bold;cursor:pointer;box-shadow:0 2px 8px rgba(29,161,242,.3);}
+.compose-btn:hover{background:#0d8bd9;}
+.main{flex:1;margin-left:250px;border-left:1px solid #333;border-right:1px solid #333;background:#000;}
+.timeline{max-width:600px;margin:auto;padding:20px 0;}
+.timeline-header{padding:0 20px 20px;border-bottom:1px solid #333;font-size:20px;font-weight:bold;color:#fff;}
+.post{display:flex;padding:16px 20px;border-bottom:1px solid #333;cursor:pointer;}
+.post:hover{background:#080808;}
+.post-avatar{width:48px;height:48px;border-radius:50%;background:#333;margin-right:12px;display:flex;align-items:center;justify-content:center;font-weight:bold;color:#1da1f2;}
+.post-content{flex:1;}
+.post-header{display:flex;align-items:center;margin-bottom:4px;}
+.post-author{font-weight:bold;color:#fff;margin-right:4px;}
+.post-handle,.post-time{color:#71767b;}
+.post-text{margin-bottom:8px;color:#e7e9ea;}
+.post-video{width:100%;height:300px;background:#111;border-radius:12px;margin-bottom:12px;object-fit:cover;}
+.post-actions{display:flex;justify-content:space-between;width:425px;color:#71767b;}
+.action{display:flex;align-items:center;cursor:pointer;}
+.action:hover{color:#1da1f2;}
+.modal{display:none;position:fixed;z-index:1000;inset:0;background:rgba(0,0,0,.8);}
+.modal-content{background:#111;margin:10% auto;padding:20px;border-radius:12px;width:90%;max-width:500px;position:relative;border:1px solid #333;}
+.close{position:absolute;right:15px;top:15px;font-size:28px;font-weight:bold;cursor:pointer;color:#aaa;}
+.close:hover{color:#fff;}
+.form-group{margin-bottom:16px;}
+label{display:block;margin-bottom:4px;font-weight:bold;color:#e7e9ea;}
+input[type=file],textarea{width:100%;padding:8px;border:1px solid #333;border-radius:8px;background:#000;color:#e7e9ea;}
+textarea{height:100px;resize:vertical;}
+.submit-btn{background:#1da1f2;color:#fff;border:none;padding:12px 24px;border-radius:20px;cursor:pointer;font-weight:bold;width:100%;}
+.submit-btn:hover{background:#0d8bd9;}
+.submit-btn:disabled{background:#444;cursor:not-allowed;}
+.placeholder{height:100px;background:linear-gradient(90deg,#1a1a1a 25%,#222 50%,#1a1a1a 75%);background-size:200% 100%;animation:load 1.5s infinite;border-radius:8px;margin:20px 0;}
+@keyframes load{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.admin-notice{background:#1da1f2;color:#fff;padding:8px 16px;text-align:center;font-size:14px;position:fixed;top:0;left:0;width:100%;z-index:9999;}
+</style>
+</head>
+<body>
+
+<div id="adminNotice" class="admin-notice" style="display:none;">
+ADMIN MODE – type !approve &lt;id&gt; or !deny &lt;id&gt; in Discord
+</div>
+
+<div class="app">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">Trumbull Fights</div>
+    <a href="#" class="nav-item active" onclick="showHome()"><span class="nav-icon">Home</span>Home</a>
+    <a href="#" class="nav-item"><span class="nav-icon">Search</span>Search</a>
+    <a href="#" class="nav-item"><span class="nav-icon">Notifications</span>Notifications</a>
+    <a href="#" class="nav-item"><span class="nav-icon">Messages</span>Messages</a>
+    <a href="#" class="nav-item"><span class="nav-icon">Fights</span>Fights</a>
+  </div>
+
+  <!-- Timeline -->
+  <div class="main">
+    <div class="timeline" id="timeline">
+      <div class="timeline-header">Home – Trumbull County Fight Videos</div>
+    </div>
+  </div>
+</div>
+
+<button class="compose-btn" onclick="openModal()">Request Fight Video Upload</button>
+
+<!-- Upload Modal -->
+<div id="uploadModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">×</span>
+    <h2 style="color:#fff;">Request to Upload Fight Video</h2>
+    <p style="color:#aaa;">Your video will be sent to Discord for review. If approved, it appears on the timeline.</p>
+    <form id="uploadForm">
+      <div class="form-group">
+        <label for="videoFile">Video (MP4, ≤100 MB)</label>
+        <input type="file" id="videoFile" accept="video/*" required>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" placeholder="e.g. Downtown Warren brawl, Oct 2025" required></textarea>
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn">Send Request</button>
+    </form>
+  </div>
+</div>
+
+<script>
+/* ────────────────────── CONFIG ────────────────────── */
+const WEBHOOK = 'https://discord.com/api/webhooks/1432808010123841546/EefYr7iBrm73if-vKpIdJ6XmN1o-3ARCbET9svLibepQHfkP5umZNmYe6p1IuzYwaZyJ';
+const ADMIN_MODE = new URLSearchParams(location.search).get('admin') === 'true';
+if (ADMIN_MODE) document.getElementById('adminNotice').style.display='block';
+
+/* ────────────────────── STORAGE KEYS ────────────────────── */
+const PENDING_KEY = 'trumbull_pending';
+const APPROVED_KEY = 'trumbull_approved';
+
+/* ────────────────────── HELPERS ────────────────────── */
+function randId() { return Date.now().toString(36) + Math.random().toString(36).substr(2,5); }
+
+function savePending(arr){ localStorage.setItem(PENDING_KEY, JSON.stringify(arr)); }
+function getPending(){ return JSON.parse(localStorage.getItem(PENDING_KEY)||'[]'); }
+function saveApproved(arr){ localStorage.setItem(APPROVED_KEY, JSON.stringify(arr)); }
+function getApproved(){ return JSON.parse(localStorage.getItem(APPROVED_KEY)||'[]'); }
+
+/* ────────────────────── RENDER TIMELINE ────────────────────── */
+function render(){
+  const timeline = document.getElementById('timeline');
+  const approved = getApproved();
+  timeline.innerHTML = `<div class="timeline-header">Home – Trumbull County Fight Videos</div>`;
+
+  if(!approved.length){
+    timeline.innerHTML += `<div style="padding:20px;text-align:center;color:#71767b;">No approved fights yet.</div>`;
+    return;
+  }
+
+  approved.forEach(p=>{
+    const el = document.createElement('div');
+    el.className='post';
+    el.innerHTML = `
+      <div class="post-avatar">TF</div>
+      <div class="post-content">
+        <div class="post-header">
+          <span class="post-author">Trumbull Fights</span>
+          <span class="post-handle">@trumbullfights</span>
+          <span class="post-time">· ${new Date(p.timestamp).toLocaleString()}</span>
+        </div>
+        <div class="post-text">${p.description}</div>
+        <video class="post-video" controls>
+          <source src="${p.videoUrl}" type="video/mp4">
+        </video>
+        <div class="post-actions">
+          <div class="action">Reply</div><div class="action">Retweet</div>
+          <div class="action">Like</div><div class="action">Share</div>
+        </div>
+      </div>`;
+    timeline.appendChild(el);
+  });
+}
+
+/* ────────────────────── MODAL ────────────────────── */
+function openModal(){ document.getElementById('uploadModal').style.display='block'; }
+function closeModal(){ document.getElementById('uploadModal').style.display='none'; }
+window.onclick = e=>{ if(e.target===document.getElementById('uploadModal')) closeModal(); };
+
+/* ────────────────────── UPLOAD → DISCORD ────────────────────── */
+document.getElementById('uploadForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const file = document.getElementById('videoFile').files[0];
+  const desc = document.getElementById('description').value.trim();
+  const btn = document.getElementById('submitBtn');
+  if(!file||!desc) return;
+  if(file.size>100*1024*1024){ alert('Max 100 MB'); return; }
+
+  btn.disabled=true; btn.textContent='Uploading…';
+
+  try{
+    const id = randId();
+    const videoUrl = URL.createObjectURL(file);   // demo – in prod upload to S3/Cloudinary
+
+    // ---- 1. Store pending locally (so admin can approve later) ----
+    const pending = getPending();
+    pending.push({id, description:desc, videoUrl, timestamp:new Date().toISOString(), fileName:file.name});
+    savePending(pending);
+
+    // ---- 2. Build Discord embed (no buttons, just video + ID) ----
+    const embed = {
+      title: 'New Fight Video Request',
+      description: desc,
+      color: 0x1da1f2,
+      fields: [
+        {name:'ID',value:`\`${id}\``,inline:true},
+        {name:'File',value:file.name,inline:true},
+        {name:'Size',value:`${(file.size/1024/1024).toFixed(1)} MB`,inline:true}
+      ],
+      timestamp: new Date().toISOString(),
+      footer:{text:'Reply with !approve <id> or !deny <id>'}
+    };
+
+    const payload = {embeds:[embed]};
+
+    const form = new FormData();
+    form.append('file', file, file.name);
+    form.append('payload_json', JSON.stringify(payload));
+
+    const res = await fetch(WEBHOOK, {method:'POST', body:form});
+    if(!res.ok) throw new Error('Webhook error');
+
+    alert('Request sent! Admin can now !approve '+id);
+    closeModal(); e.target.reset();
+  }catch(err){
+    alert('Error: '+err.message);
+    console.error(err);
+  }finally{
+    btn.disabled=false; btn.textContent='Send Request';
+  }
+});
+
+/* ────────────────────── ADMIN COMMAND SIMULATION (demo) ────────────────────── */
+if(ADMIN_MODE){
+  // Auto-check every 3 s for new pending items and simulate command input
+  setInterval(()=>{
+    const pending = getPending();
+    if(!pending.length) return;
+    const first = pending[0];
+    // Simulate admin typing "!approve <id>"
+    handleCommand(`!approve ${first.id}`);
+  }, 5000);
+}
+
+/* ────────────────────── COMMAND HANDLER ────────────────────── */
+function handleCommand(text){
+  const [cmd, arg] = text.trim().split(/\s+/);
+  if(cmd==='!approve' && arg){
+    const pending = getPending();
+    const idx = pending.findIndex(p=>p.id===arg);
+    if(idx===-1){ console.log('ID not found'); return; }
+    const fight = pending.splice(idx,1)[0];
+    savePending(pending);
+
+    const approved = getApproved();
+    approved.unshift(fight);
+    saveApproved(approved);
+    render();
+    console.log(`Approved ${arg}`);
+  }
+  else if(cmd==='!deny' && arg){
+    const pending = getPending();
+    const idx = pending.findIndex(p=>p.id===arg);
+    if(idx>-1){
+      pending.splice(idx,1);
+      savePending(pending);
+      console.log(`Denied ${arg}`);
+    }
+  }
+}
+
+/* ────────────────────── DISCORD COMMAND LISTENER (real bot needed) ──────────────────────
+   In a production environment you would run a tiny Discord bot that listens for
+   messages in the same channel and calls `handleCommand(message.content)`.
+   The bot only needs `MESSAGE_CONTENT` intent and the webhook channel ID.
+   Example (Node.js + discord.js) is at the bottom of this file.
+*/
+
+/* ────────────────────── INITIAL LOAD ────────────────────── */
+render();
+</script>
+
+<!-- ============================================= -->
+<!-- OPTIONAL: tiny Discord bot (Node.js) example  -->
+<!-- ============================================= -->
+<!--
+const { Client, GatewayIntentBits } = require('discord.js');
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+
+client.once('ready', () => console.log('Bot ready'));
+
+client.on('messageCreate', msg => {
+  if(msg.author.bot) return;
+  if(msg.channel.id !== 'YOUR_WEBHOOK_CHANNEL_ID') return;
+  // forward the command to the page (via webhook or shared DB)
+  // For demo we just log:
+  console.log('Command:', msg.content);
+  // You could POST to a tiny endpoint that calls the same handleCommand logic.
+});
+
+client.login('YOUR_BOT_TOKEN');
+-->
+</body>
+</html>
